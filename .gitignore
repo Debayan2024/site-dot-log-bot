@@ -1,0 +1,7 @@
+.env
+*.db
+credentials.json
+exports/
+__pycache__/
+.pytest_cache/
+.venv/

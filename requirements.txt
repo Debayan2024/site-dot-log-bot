@@ -1,0 +1,7 @@
+python-telegram-bot[job-queue]>=20.7
+google-genai>=1.0
+pydantic>=2.5
+python-dotenv>=1.0
+gspread>=6.0
+tzdata
+pytest>=8.0
