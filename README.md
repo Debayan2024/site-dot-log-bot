@@ -4,6 +4,29 @@ A Telegram bot that turns plain Hindi / English / Hinglish site messages into a 
 
 > Status: prototype. Not yet tested with real site users. Eval numbers are in [eval/results.md](eval/results.md) (none recorded until you run it with your API key).
 
+## Why this exists
+
+Site teams already report on WhatsApp/Telegram and paper registers. Software is easy to build; getting a busy site team to use it every day is the hard part. So the design rule is: **the worker keeps writing the way they already talk, and the system does the structuring.**
+
+| Who | What they do | What the bot gives them |
+|---|---|---|
+| Supervisor | Sends a one-line update in Hindi / English / Hinglish ("aaj 40 sqft ceiling, 6 mazdoor") | Read-back and one-tap confirm, no forms or typing rules |
+| Store keeper | Sends material in / out ("20 bag cement aaya") | Live stock balance via `/stock cement` |
+| Site engineer | Reviews the day | One end-of-day summary with anomaly flags, plus a Sheet that stays up to date |
+
+Built to be low-friction: no app install beyond Telegram, no training on a format, and a wrong entry is fixed with `/undo` instead of a call to the office.
+
+## Adoption plan (for a real site rollout)
+
+This is the plan, not a result. None of it has been run on a live site yet.
+
+1. **Week 1: shadow.** Sit with the site engineer, store keeper and supervisors. Watch how the paper register and WhatsApp reporting really work. Collect real message samples and add them to `eval/samples.jsonl`.
+2. **Week 2: pilot.** Onboard one or two willing people. Check the eval and failure table against their real messages and fix the prompt and units first.
+3. **Week 3 onward: expand.** Add the rest of the team. Whenever someone slips back to paper, find out why and fix the setup or report it to the tech team.
+4. **Ongoing.** A daily check-in with the tech team and a weekly update. Track what is used, what is skipped and which fixes were made.
+
+Things to set up per project: site name, `ALLOWED_USER_IDS`, `SUMMARY_CHAT_IDS`, `EXPECTED_REPORTERS`, and the material and task names the site actually uses.
+
 ## Architecture
 
 ```
@@ -90,6 +113,15 @@ Covers stock maths, undo, labour double-counting, the four anomaly rules, and th
 - Undoing an entry that was already synced removes its Sheet rows best-effort.
 - Sheet `Stock Balance` tab sums quantities per material regardless of unit; check the Unit column when units are mixed.
 - No real-site feedback yet.
+- Kannada messages are not covered by the eval set (English, Hinglish and Devanagari only).
+
+## Roadmap (driven by what site users ask for)
+
+- Voice notes, since many supervisors prefer speaking to typing.
+- Challan photo capture for the store keeper.
+- Persist pending confirmations so a restart does not lose them.
+- Kannada support and local material names.
+- `/ask` over site drawings and PDFs.
 
 ## Hours
 
